@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chegirmalar - Aksiya Top</title>
+    <link rel="stylesheet" href="src/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body class="inner-page">
+    <header class="glass-nav">
+        <div class="container">
+            <a href="index.html" class="logo">Aksiya<span>Top</span></a>
+            <nav id="navMenu">
+                <ul>
+                    <li><a href="index.html">Asosiy</a></li>
+                    <li><a href="discounts.html">Chegirmalar</a></li>
+                </ul>
+            </nav>
+            <div id="authSection" class="auth-section">
+                <button id="loginBtn" class="btn btn-outline">Kirish</button>
+                <button id="addAksiyaBtn" class="btn btn-primary" style="display: none;">Aksiya qo'shish</button>
+                <div id="userProfile" class="user-profile" style="display: none;">
+                    <span id="userNameDisplay"></span>
+                    <div class="desktop-admin-actions">
+                        <button id="logoutBtn" class="btn-logout">Chiqish</button>
+                        <button onclick="clearAllAksiyalar()" class="btn-logout"
+                            style="background: rgba(255,255,255,0.1); color: white; border-color: rgba(255,255,255,0.2);">Tozalash</button>
+                    </div>
+                </div>
+            </div>
+            <button id="menuToggle" class="menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+
+
+    <main>
+        <div class="page-header container" style="margin-top: 120px;">
+            <h1>Barcha <span>Chegirmalar</span></h1>
+            <div class="search-bar" style="max-width: 100%; margin: 30px 0;">
+                <input type="text" placeholder="Do'kon yoki mahsulot nomi...">
+                <button class="btn btn-search">Qidirish</button>
+            </div>
+        </div>
+
+        <section id="discounts" class="discounts container">
+            <div class="section-header">
+                <h2>Saralangan Aksiyalar</h2>
+                <div class="filters">
+                    <button class="filter-btn active">Hammasi</button>
+                    <button class="filter-btn">Oziq-ovqat</button>
+                    <button class="filter-btn">Kiyim-kechak</button>
+                    <button class="filter-btn">Texnika</button>
+                </div>
+            </div>
+            <div id="discountsGrid" class="discounts-grid">
+                <!-- Discounts loaded here -->
+            </div>
+        </section>
+
+        <section id="map" class="map-section container">
+            <h2>Xarita orqali ko'rish</h2>
+            <div id="googleMap" class="map-container"></div>
+        </section>
+    </main>
+
+    <footer class="container">
+        <p>&copy; 2026 Aksiya Top Startup. Barcha huquqlar himoyalangan.</p>
+    </footer>
+
+    <!-- Add Aksiya Modal -->
+    <div id="aksiyaModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Yangi Aksiya Qo'shish</h2>
+            <form id="aksiyaForm">
+                <input type="text" id="shopName" placeholder="Do'kon nomi" required>
+                <div class="input-group">
+                    <input type="text" id="productName" placeholder="Mahsulot yoki xizmat nomi" required>
+                    <div id="aiNameHint" class="ai-hint" style="display: none;">✨ AI taklifi: <span
+                            id="suggestedName"></span></div>
+                </div>
+                <select id="productCategory" required
+                    style="width: 100%; padding: 12px; margin: 10px 0; background: var(--bg-dark); border: 1px solid var(--glass-border); border-radius: 8px; color: white;">
+                    <option value="" disabled selected>Kategoriyani tanlang</option>
+                    <option value="Oziq-ovqat">Oziq-ovqat</option>
+                    <option value="Kiyim-kechak">Kiyim-kechak</option>
+                    <option value="Texnika">Texnika</option>
+                    <option value="Xizmatlar">Xizmatlar</option>
+                </select>
+                <input type="number" id="discountPercent" placeholder="Chegirma foizi (%)" required>
+                <div class="file-upload">
+                    <label for="productImage">Mahsulot rasmi:</label>
+                    <input type="file" id="productImage" accept="image/*" required>
+                    <div id="imagePreview" class="image-preview"></div>
+                </div>
+                <div id="modalMap" class="small-map"></div>
+                <input type="hidden" id="latitude">
+                <input type="hidden" id="longitude">
+                <button type="submit" class="btn btn-primary">Joylash</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Auth Modal -->
+    <div id="authModal" class="modal">
+        <div class="modal-content">
+            <span class="close-auth">&times;</span>
+            <div id="loginFormSection">
+                <h2>Kirish</h2>
+                <form id="loginForm">
+                    <input type="text" id="loginUser" placeholder="Login (e.g. admin)" required>
+                    <input type="password" id="loginPass" placeholder="Parol" required>
+                    <button type="submit" class="btn btn-primary w-100">Kirish</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://api-maps.yandex.ru/2.1/?lang=uz_UZ&apikey=YOUR_YANDEX_API_KEY" type="text/javascript"></script>
+    <script src="https://unpkg.com/ml5@latest/dist/ml5.min.js"></script>
+    <script src="src/js/maps.js"></script>
+    <script src="src/js/data-generator.js"></script>
+    <script src="src/js/app.js" defer></script>
+</body>
+
+</html>
