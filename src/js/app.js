@@ -33,8 +33,8 @@ function loadDiscounts(data, append = false) {
     pagedData.forEach(item => {
         const card = document.createElement('div');
         card.className = 'discount-card';
-        const imgHtml = (typeof item.img === 'string' && item.img.startsWith('data:image'))
-            ? `<img src="${item.img}" style="width: 100%; height: 100%; object-fit: cover;">`
+        const imgHtml = (typeof item.img === 'string' && (item.img.startsWith('http') || item.img.startsWith('data:image')))
+            ? `<img src="${item.img}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='https://placehold.co/400x300?text=Rasm+topilmadi'">`
             : `<span style="font-size: 50px">${item.img}</span>`;
 
         card.innerHTML = `
