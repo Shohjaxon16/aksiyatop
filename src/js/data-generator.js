@@ -62,6 +62,23 @@ function getRandomLocation() {
     };
 }
 
+const PRODUCT_KEYWORDS = {
+    "Burger": "burger", "Pizza": "pizza", "Lavash": "wrap,food", "Osh": "pilaf,rice", "Coca-Cola 1.5L": "soda,coke",
+    "Sut": "milk", "Non": "bread", "Shokolad": "chocolate", "Kofe": "coffee", "Mevalar": "fruits",
+    "Salat": "salad", "Muzqaymoq": "icecream", "Pishiriq": "pastry", "Sharbat": "juice", "Choy": "tea",
+    "Futbolka": "tshirt", "Jinsi shim": "jeans", "Krossovka": "sneakers", "Ko'ylak": "dress", "Kurtka": "jacket",
+    "Kostyum-shim": "suit", "Paypoq": "socks", "Kepka": "cap", "Mayka": "undershirt", "Svitshot": "sweatshirt",
+    "Shortik": "shorts", "Tufli": "shoes", "Sandal": "sandals", "Shlyapa": "hat", "Kashmir": "sweater",
+    "iPhone 15 Pro": "iphone", "Samsung Galaxy S24": "samsung,phone", "MacBook Air": "macbook,laptop",
+    "Smart Watch": "smartwatch", "Televizor": "tv,television", "Muzlatgich": "fridge,refrigerator",
+    "Fen": "hairdryer", "Dazmol": "iron,appliances", "Konditsioner": "airconditioner", "Planshet": "tablet",
+    "Quloqchin": "headphones", "Klaviatura": "keyboard", "Sichqoncha": "mouse", "Monitor": "monitor,screen", "Kamera": "camera",
+    "Avto yuvish": "carwash", "Stomatologiya": "dentist", "O'quv kursi": "classroom,study", "Fitnes": "gym,fitness",
+    "Gid": "travel,guide", "Uy tozalash": "cleaning", "Rasmga tushirish": "photography", "Massaj": "massage",
+    "Sartarosh": "barber", "Manikyur": "manicure", "Taksi": "taxi", "Kuryer": "delivery",
+    "Kimyoviy tozalash": "drycleaning", "Ta'mirlash": "repair", "Sug'urta": "insurance"
+};
+
 function generateAksiyalar(totalCount = 1000) {
     const data = [];
     const itemsPerCategory = Math.floor(totalCount / CATEGORIES.length);
@@ -69,15 +86,15 @@ function generateAksiyalar(totalCount = 1000) {
     let globalIndex = 0;
     CATEGORIES.forEach(category => {
         const productsList = PRODUCTS[category];
-        const keyword = CATEGORY_KEYWORDS[category];
 
         for (let i = 0; i < itemsPerCategory; i++) {
             const shop = UZBEK_SHOPS[Math.floor(Math.random() * UZBEK_SHOPS.length)];
-            const productBase = productsList[Math.floor(Math.random() * productsList.length)];
+            const productName = productsList[Math.floor(Math.random() * productsList.length)];
             const loc = getRandomLocation();
 
             // Ensure unique name by appending global ID
-            const uniqueProduct = `${productBase} #${globalIndex + 1}`;
+            const uniqueProduct = `${productName} #${globalIndex + 1}`;
+            const imgKeyword = PRODUCT_KEYWORDS[productName] || "product";
 
             data.push({
                 id: `gen-${globalIndex}`,
@@ -87,8 +104,8 @@ function generateAksiyalar(totalCount = 1000) {
                 percent: Math.floor(Math.random() * 80) + 10, // 10% to 90%
                 lat: loc.lat,
                 lng: loc.lng,
-                // Using LoremFlickr for real unique images
-                img: `https://loremflickr.com/400/300/${keyword.split(',')[0]}?lock=${globalIndex}`,
+                // Using specific product keywords for better images
+                img: `https://loremflickr.com/400/300/${imgKeyword}?lock=${globalIndex}`,
                 verified: Math.random() < 0.3 // 30% verified
             });
             globalIndex++;
