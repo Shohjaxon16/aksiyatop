@@ -10,10 +10,17 @@ const UZBEK_SHOPS = [
 ];
 
 const PRODUCTS = {
-    "Oziq-ovqat": ["Burger", "Pizza", "Lavash", "Osh", "Coca-Cola 1.5L", "Sut", "Non", "Shokolad", "Kofe", "Mevalar"],
-    "Kiyim-kechak": ["Futbolka", "Jinsi shim", "Krossovka", "Ko'ylak", "Kurtka", "Kostyum-shim", "Paypoq", "Kepka"],
-    "Texnika": ["iPhone 15 Pro", "Samsung Galaxy S24", "MacBook Air", "Smart Watch", "Televizor", "Muzlatgich", "Fen", "Dazmol"],
-    "Xizmatlar": ["Avto yuvish", "Stomatologiya", "O'quv kursi", "Fitnes", "Gid", "Uy tozalash", "Rasmga tushirish"]
+    "Oziq-ovqat": ["Burger", "Pizza", "Lavash", "Osh", "Coca-Cola 1.5L", "Sut", "Non", "Shokolad", "Kofe", "Mevalar", "Salat", "Muzqaymoq", "Pishiriq", "Sharbat", "Choy"],
+    "Kiyim-kechak": ["Futbolka", "Jinsi shim", "Krossovka", "Ko'ylak", "Kurtka", "Kostyum-shim", "Paypoq", "Kepka", "Mayka", "Svitshot", "Shortik", "Tufli", "Sandal", "Shlyapa", "Kashmir"],
+    "Texnika": ["iPhone 15 Pro", "Samsung Galaxy S24", "MacBook Air", "Smart Watch", "Televizor", "Muzlatgich", "Fen", "Dazmol", "Konditsioner", "Planshet", "Quloqchin", "Klaviatura", "Sichqoncha", "Monitor", "Kamera"],
+    "Xizmatlar": ["Avto yuvish", "Stomatologiya", "O'quv kursi", "Fitnes", "Gid", "Uy tozalash", "Rasmga tushirish", "Massaj", "Sartarosh", "Manikyur", "Taksi", "Kuryer", "Kimyoviy tozalash", "Ta'mirlash", "Sug'urta"]
+};
+
+const CATEGORY_KEYWORDS = {
+    "Oziq-ovqat": "food,groceries",
+    "Kiyim-kechak": "fashion,clothes",
+    "Texnika": "tech,electronics",
+    "Xizmatlar": "service,business"
 };
 
 const CATEGORIES = Object.keys(PRODUCTS);
@@ -55,30 +62,42 @@ function getRandomLocation() {
     };
 }
 
-function generateAksiyalar(count = 10000) {
+function generateAksiyalar(totalCount = 1000) {
     const data = [];
-    const emojis = ["🍔", "🍕", "👔", "📱", "💻", "🛒", "🛍️", "👟", "🍦", "🎂"];
+    const itemsPerCategory = Math.floor(totalCount / CATEGORIES.length);
 
-    for (let i = 0; i < count; i++) {
-        const category = CATEGORIES[Math.floor(Math.random() * CATEGORIES.length)];
+    let globalIndex = 0;
+    CATEGORIES.forEach(category => {
         const productsList = PRODUCTS[category];
-        const product = productsList[Math.floor(Math.random() * productsList.length)];
-        const loc = getRandomLocation();
+        const keyword = CATEGORY_KEYWORDS[category];
 
-        data.push({
-            id: `gen-${i}`,
-            shop: UZBEK_SHOPS[Math.floor(Math.random() * UZBEK_SHOPS.length)],
-            product: product,
-            category: category,
-            percent: Math.floor(Math.random() * 80) + 10, // 10% to 90%
-            lat: loc.lat,
-            lng: loc.lng,
-            img: emojis[Math.floor(Math.random() * emojis.length)],
-            verified: Math.random() < 0.3 // 30% verified
-        });
-    }
-    return data;
+        for (let i = 0; i < itemsPerCategory; i++) {
+            const shop = UZBEK_SHOPS[Math.floor(Math.random() * UZBEK_SHOPS.length)];
+            const productBase = productsList[Math.floor(Math.random() * productsList.length)];
+            const loc = getRandomLocation();
+
+            // Ensure unique name by appending global ID
+            const uniqueProduct = `${productBase} #${globalIndex + 1}`;
+
+            data.push({
+                id: `gen-${globalIndex}`,
+                shop: shop,
+                product: uniqueProduct,
+                category: category,
+                percent: Math.floor(Math.random() * 80) + 10, // 10% to 90%
+                lat: loc.lat,
+                lng: loc.lng,
+                // Using LoremFlickr for real unique images
+                img: `https://loremflickr.com/400/300/${keyword.split(',')[0]}?lock=${globalIndex}`,
+                verified: Math.random() < 0.3 // 30% verified
+            });
+            globalIndex++;
+        }
+    });
+
+    // Shuffle the array to mix categories
+    return data.sort(() => Math.random() - 0.5);
 }
 
-window.generatedAksiyalar = generateAksiyalar(10000);
-console.log("Successfully generated 10,000 promotions! 🚀");
+window.generatedAksiyalar = generateAksiyalar(1000);
+console.log("Successfully generated 1,000 unique promotions with real images! 🚀");
